@@ -115,9 +115,6 @@ $count = $query->rowCount();
                 <a href="packages.php?type=Wildlife" class="filter-chip <?php echo $type == 'Wildlife' ? 'active' : ''; ?>">
                     <i class="fas fa-paw"></i> Wildlife
                 </a>
-                <a href="packages.php?type=Beach" class="filter-chip <?php echo $type == 'Beach' ? 'active' : ''; ?>">
-                    <i class="fas fa-umbrella-beach"></i> Beach
-                </a>
                 <a href="packages.php?type=Trekking" class="filter-chip <?php echo $type == 'Trekking' ? 'active' : ''; ?>">
                     <i class="fas fa-hiking"></i> Trekking
                 </a>

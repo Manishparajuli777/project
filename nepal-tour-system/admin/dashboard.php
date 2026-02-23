@@ -93,10 +93,10 @@ else
         </div>
     </div>
     
-    <div style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); padding: 48px; border-radius: 20px; text-align: center; box-shadow: var(--shadow-lg); border: 1px solid rgba(255, 255, 255, 0.8); animation: scaleIn 1s ease-out 0.8s both;">
-        <i class="fas fa-user-shield" style="font-size: 64px; background: linear-gradient(135deg, #FF6B35, #004E89); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px; display: block; animation: float 3s ease-in-out infinite;"></i>
-        <h2 style="margin-bottom: 16px; font-family: 'Poppins', sans-serif; font-size: 32px; background: linear-gradient(135deg, #FF6B35, #004E89); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Welcome to Yatra Admin!</h2>
-        <p style="font-size: 16px; color: #6B7280; max-width: 600px; margin: 0 auto;">Manage your travel platform efficiently. Use the navigation above to handle packages, users, bookings, and customer enquiries.<br><strong style="color: #FF6B35;">Your dashboard is ready!</strong></p>
+    <div style="background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%); padding: 48px; border-radius: 20px; text-align: center; box-shadow: var(--shadow-lg); border: 1px solid var(--border); animation: scaleIn 1s ease-out 0.8s both;">
+        <i class="fas fa-user-shield" style="font-size: 64px; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px; display: block; animation: float 3s ease-in-out infinite;"></i>
+        <h2 style="margin-bottom: 16px; font-family: 'Poppins', sans-serif; font-size: 32px; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Welcome to Yatra Admin!</h2>
+        <p style="font-size: 16px; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">Manage your travel platform efficiently. Use the navigation above to handle packages, users, bookings, and customer enquiries.<br><strong style="color: var(--primary);">Your dashboard is ready!</strong></p>
     </div>
 </div>
 
@@ -124,7 +124,7 @@ window.addEventListener('load', function() {
 // Add hover glow effect to stat cards
 document.querySelectorAll('.stat-card').forEach(card => {
     card.addEventListener('mouseenter', function() {
-        this.style.boxShadow = '0 25px 50px rgba(255, 107, 53, 0.3)';
+        this.style.boxShadow = '0 25px 50px rgba(15, 118, 110, 0.28)';
     });
     card.addEventListener('mouseleave', function() {
         this.style.boxShadow = '';

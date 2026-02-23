@@ -9,6 +9,8 @@ if(strlen($_SESSION['alogin']) == 0)
 }
 else
 {
+    $packageTypes = array('Adventure', 'Cultural', 'Wildlife', 'Trekking');
+
     if(isset($_POST['submit']))
     {
         $pname = $_POST['packagename'];
@@ -21,20 +23,24 @@ else
         
         move_uploaded_file($_FILES["packageimage"]["tmp_name"], "../photo/".$_FILES["packageimage"]["name"]);
         
-        $sql = "INSERT INTO tbltourpackages(PackageName, PackageType, PackageLocation, PackagePrice, PackageFetures, PackageDetails, PackageImage) 
-                VALUES(:pname, :ptype, :plocation, :pprice, :pfeatures, :pdetails, :pimage)";
-        
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':pname', $pname, PDO::PARAM_STR);
-        $query->bindParam(':ptype', $ptype, PDO::PARAM_STR);
-        $query->bindParam(':plocation', $plocation, PDO::PARAM_STR);
-        $query->bindParam(':pprice', $pprice, PDO::PARAM_STR);
-        $query->bindParam(':pfeatures', $pfeatures, PDO::PARAM_STR);
-        $query->bindParam(':pdetails', $pdetails, PDO::PARAM_STR);
-        $query->bindParam(':pimage', $pimage, PDO::PARAM_STR);
-        
-        $query->execute();
-        $msg = "Package Created Successfully!";
+        if(!in_array($ptype, $packageTypes, true)) {
+            $error = "Please select a valid package type.";
+        } else {
+            $sql = "INSERT INTO tbltourpackages(PackageName, PackageType, PackageLocation, PackagePrice, PackageFetures, PackageDetails, PackageImage) 
+                    VALUES(:pname, :ptype, :plocation, :pprice, :pfeatures, :pdetails, :pimage)";
+            
+            $query = $dbh->prepare($sql);
+            $query->bindParam(':pname', $pname, PDO::PARAM_STR);
+            $query->bindParam(':ptype', $ptype, PDO::PARAM_STR);
+            $query->bindParam(':plocation', $plocation, PDO::PARAM_STR);
+            $query->bindParam(':pprice', $pprice, PDO::PARAM_STR);
+            $query->bindParam(':pfeatures', $pfeatures, PDO::PARAM_STR);
+            $query->bindParam(':pdetails', $pdetails, PDO::PARAM_STR);
+            $query->bindParam(':pimage', $pimage, PDO::PARAM_STR);
+            
+            $query->execute();
+            $msg = "Package Created Successfully!";
+        }
     }
 ?>
 <!DOCTYPE HTML>
@@ -65,12 +71,20 @@ body {
     border-radius: 5px;
     margin-bottom: 20px;
 }
+.error-msg {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
 </style>
 </head>
 <body>
 <div class="form-container">
     <h2>Create New Tour Package</h2>
     <?php if($msg) { echo "<div class='success-msg'>$msg</div>"; } ?>
+    <?php if($error) { echo "<div class='error-msg'>$error</div>"; } ?>
     
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
@@ -80,7 +94,14 @@ body {
         
         <div class="form-group">
             <label>Package Type:</label>
-            <input type="text" name="packagetype" class="form-control" placeholder="e.g., Cultural, Adventure, Trekking" required>
+            <select name="packagetype" class="form-control" required>
+                <option value="">Select package type</option>
+                <?php foreach($packageTypes as $type) { ?>
+                    <option value="<?php echo htmlentities($type); ?>" <?php echo (isset($_POST['packagetype']) && $_POST['packagetype'] === $type) ? 'selected' : ''; ?>>
+                        <?php echo htmlentities($type); ?>
+                    </option>
+                <?php } ?>
+            </select>
         </div>
         
         <div class="form-group">

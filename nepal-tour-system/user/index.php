@@ -86,9 +86,6 @@ include('includes/config.php');
                 <a href="packages.php?type=Wildlife" class="filter-chip">
                     <i class="fas fa-paw"></i> Wildlife
                 </a>
-                <a href="packages.php?type=Beach" class="filter-chip">
-                    <i class="fas fa-umbrella-beach"></i> Beach
-                </a>
                 <a href="packages.php?type=Trekking" class="filter-chip">
                     <i class="fas fa-hiking"></i> Trekking
                 </a>

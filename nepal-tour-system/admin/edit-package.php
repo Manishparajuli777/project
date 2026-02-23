@@ -9,6 +9,7 @@ if(strlen($_SESSION['alogin']) == 0)
 }
 else
 {
+    $packageTypes = array('Adventure', 'Cultural', 'Wildlife', 'Trekking');
     $pid = intval($_GET['pid']);
     
     if(isset($_POST['submit']))
@@ -20,21 +21,25 @@ else
         $pfeatures = $_POST['packagefeatures'];
         $pdetails = $_POST['packagedetails'];
         
-        $sql = "UPDATE tbltourpackages SET PackageName=:pname, PackageType=:ptype, 
-                PackageLocation=:plocation, PackagePrice=:pprice, PackageFeatures=:pfeatures, 
-                PackageDetails=:pdetails WHERE PackageId=:pid";
-        
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':pname', $pname, PDO::PARAM_STR);
-        $query->bindParam(':ptype', $ptype, PDO::PARAM_STR);
-        $query->bindParam(':plocation', $plocation, PDO::PARAM_STR);
-        $query->bindParam(':pprice', $pprice, PDO::PARAM_STR);
-        $query->bindParam(':pfeatures', $pfeatures, PDO::PARAM_STR);
-        $query->bindParam(':pdetails', $pdetails, PDO::PARAM_STR);
-        $query->bindParam(':pid', $pid, PDO::PARAM_INT);
-        $query->execute();
-        
-        $msg = "Package updated successfully!";
+        if(!in_array($ptype, $packageTypes, true)) {
+            $error = "Please select a valid package type.";
+        } else {
+            $sql = "UPDATE tbltourpackages SET PackageName=:pname, PackageType=:ptype, 
+                    PackageLocation=:plocation, PackagePrice=:pprice, PackageFeatures=:pfeatures, 
+                    PackageDetails=:pdetails WHERE PackageId=:pid";
+            
+            $query = $dbh->prepare($sql);
+            $query->bindParam(':pname', $pname, PDO::PARAM_STR);
+            $query->bindParam(':ptype', $ptype, PDO::PARAM_STR);
+            $query->bindParam(':plocation', $plocation, PDO::PARAM_STR);
+            $query->bindParam(':pprice', $pprice, PDO::PARAM_STR);
+            $query->bindParam(':pfeatures', $pfeatures, PDO::PARAM_STR);
+            $query->bindParam(':pdetails', $pdetails, PDO::PARAM_STR);
+            $query->bindParam(':pid', $pid, PDO::PARAM_INT);
+            $query->execute();
+            
+            $msg = "Package updated successfully!";
+        }
     }
     
     // Fetch package details
@@ -62,6 +67,7 @@ else
     </div>
     
     <?php if($msg) { echo "<div class='success-msg'><i class='fas fa-check-circle'></i> $msg</div>"; } ?>
+    <?php if($error) { echo "<div class='error-msg'><i class='fas fa-exclamation-triangle'></i> $error</div>"; } ?>
     
     <form method="post">
         <div class="row">
@@ -72,7 +78,18 @@ else
             
             <div class="col-md-6 mb-4">
                 <label class="form-label" style="font-weight: 600; color: #0f172a;"><i class="fas fa-list"></i> Package Type:</label>
-                <input type="text" name="packagetype" class="form-control" value="<?php echo htmlentities($result->PackageType); ?>" required>
+                <?php $selectedType = isset($_POST['packagetype']) ? $_POST['packagetype'] : $result->PackageType; ?>
+                <select name="packagetype" class="form-control" required>
+                    <option value="">Select package type</option>
+                    <?php foreach($packageTypes as $type) { ?>
+                        <option value="<?php echo htmlentities($type); ?>" <?php echo ($selectedType === $type) ? 'selected' : ''; ?>>
+                            <?php echo htmlentities($type); ?>
+                        </option>
+                    <?php } ?>
+                    <?php if(!empty($selectedType) && !in_array($selectedType, $packageTypes, true)) { ?>
+                        <option value="<?php echo htmlentities($selectedType); ?>" selected><?php echo htmlentities($selectedType); ?> (Current)</option>
+                    <?php } ?>
+                </select>
             </div>
         </div>
         
